@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription Familiale - Kinetic Playground</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:linear-gradient(160deg,#f0f9ff 0%,#e0f2fe 40%,#f0fdf4 100%);min-height:100vh;color:#1e293b}
+.hero{background:linear-gradient(135deg,#1d4ed8 0%,#0ea5e9 60%,#10b981 100%);padding:36px 20px 28px;text-align:center;position:relative;overflow:hidden}
+.hero-icon{display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;background:rgba(255,255,255,0.2);border-radius:22px;font-size:34px;color:#fff;margin-bottom:16px;position:relative;backdrop-filter:blur(8px)}
+.hero h1{font-size:clamp(22px,6vw,30px);font-weight:900;color:#fff;margin-bottom:8px;position:relative}
+.hero p{font-size:clamp(13px,4vw,15px);color:rgba(255,255,255,0.85);max-width:420px;margin:0 auto;line-height:1.5;position:relative}
+.wrapper{max-width:680px;margin:0 auto;padding:24px 16px 48px}
+.card{background:#fff;border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,0.06);border:1px solid #f1f5f9;margin-bottom:20px;overflow:hidden}
+.card-header{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid #f1f5f9}
+.card-header-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.card-header h3{font-size:16px;font-weight:800;color:#0f172a}
+.card-header p{font-size:12px;color:#64748b;margin-top:1px}
+.card-body{padding:20px 22px}
+.form-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:520px){.form-grid{grid-template-columns:1fr 1fr}.col-span-2{grid-column:span 2}}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.5px}
+.form-label .required{color:#ef4444;margin-left:2px}
+.form-input{width:100%;padding:13px 15px;border:2px solid #e2e8f0;border-radius:12px;font-size:15px;font-family:'Outfit',sans-serif;color:#1e293b;background:#f8fafc;outline:none;transition:border-color .2s,box-shadow .2s,background .2s;-webkit-appearance:none}
+.form-input:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 4px rgba(29,78,216,0.08)}
+.form-input::placeholder{color:#c8d4e3}
+.child-block{border:2px dashed #cbd5e1;border-radius:16px;padding:18px;margin-bottom:14px;background:#fafbff;position:relative;animation:fadeSlide .25s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.child-block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.child-label{background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:800;padding:5px 12px;border-radius:8px}
+.btn-remove-child{background:#fef2f2;color:#ef4444;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:background .15s,transform .15s}
+.btn-remove-child:hover{background:#fee2e2;transform:scale(1.1)}
+.btn-add-child{width:100%;padding:14px;border:2px dashed #3b82f6;border-radius:14px;background:#eff6ff;color:#2563eb;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s,transform .2s;margin-top:4px}
+.btn-add-child:hover{background:#dbeafe;transform:translateY(-1px)}
+.btn-submit{width:100%;padding:18px;border:none;border-radius:16px;background:linear-gradient(135deg,#1d4ed8,#0ea5e9,#10b981);background-size:200% 200%;color:#fff;font-family:'Outfit',sans-serif;font-size:17px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 8px 24px rgba(29,78,216,0.3);transition:transform .2s,box-shadow .2s;margin-top:24px}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(29,78,216,0.4)}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.notice{display:flex;gap:12px;align-items:flex-start;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px 18px;margin-top:16px;font-size:13px;color:#166534}
+.notice i{margin-top:1px;flex-shrink:0;font-size:15px}
+.footer{text-align:center;font-size:12px;color:#94a3b8;margin-top:32px}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);z-index:9999;justify-content:center;align-items:center;flex-direction:column;gap:20px}
+.loading-overlay.active{display:flex}
+.loading-spinner{width:56px;height:56px;border:5px solid #e2e8f0;border-top-color:#1d4ed8;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-page{display:none;min-height:100vh;justify-content:center;align-items:center;padding:20px;background:linear-gradient(160deg,#f0f9ff 0%,#e0f2fe 40%,#f0fdf4 100%)}
+.success-page.active{display:flex}
+.success-card{background:white;border-radius:24px;padding:48px 36px;max-width:500px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.06);animation:popIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both;border:1px solid #f1f5f9}
+@keyframes popIn{0%{opacity:0;transform:scale(0.9) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.success-icon{width:90px;height:90px;background:#ecfdf5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;position:relative}
+.success-icon::before{content:'';position:absolute;width:100%;height:100%;border-radius:50%;border:3px solid #10b981;border-top-color:transparent;animation:spin 2s linear infinite}
+.success-icon i{font-size:36px;color:#10b981}
+.error-toast{display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #ef4444;padding:16px 24px;border-radius:12px;z-index:10000;max-width:90%;width:400px;box-shadow:0 10px 25px rgba(0,0,0,0.1);animation:slideDown 0.3s ease-out}
+.error-toast.active{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><p style="font-size:18px;font-weight:700;color:#334155;">Envoi en cours...</p><p style="font-size:14px;color:#64748b;">Veuillez patienter quelques secondes</p></div>
+<div class="error-toast" id="errorToast"><div style="display:flex;align-items:flex-start;gap:12px;"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;margin-top:2px;"></i><div><strong style="font-size:14px;color:#991b1b;display:block;margin-bottom:4px;">Erreur</strong><p id="errorMessage" style="font-size:12px;color:#b91c1c;margin:0;">Une erreur est survenue.</p></div><button onclick="document.getElementById('errorToast').classList.remove('active')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:16px;margin-left:auto;"><i class="fa-solid fa-xmark"></i></button></div></div>
+<div id="formPage">
+<div class="hero"><div class="hero-icon"><i class="fa-solid fa-gamepad"></i></div><h1>Inscription Familiale</h1><p>Veuillez remplir vos informations personnelles et celles de vos enfants pour finaliser votre inscription.</p></div>
+<div class="wrapper"><form id="registrationForm" onsubmit="return handleSubmit(event)" novalidate>
+<div class="card"><div class="card-header"><div class="card-header-icon" style="background:#eff6ff;color:#1d4ed8;"><i class="fa-solid fa-user-tie"></i></div><div><h3>Informations Personnelles</h3><p>Les champs marques d'un * sont obligatoires</p></div></div><div class="card-body"><div class="form-grid">
+<div class="form-group"><label class="form-label">Nom Complet (Pere) <span class="required">*</span></label><input type="text" id="father_name" class="form-input" placeholder="Ex: Mohammed Alami" required></div>
+<div class="form-group"><label class="form-label">Nom Complet (Mere)</label><input type="text" id="mother_name" class="form-input" placeholder="Ex: Fatima Alaoui"></div>
+<div class="form-group"><label class="form-label">Numero WhatsApp <span class="required">*</span></label><input type="tel" id="phone" class="form-input" placeholder="+212 6..." required></div>
+<div class="form-group"><label class="form-label">Tel. Urgence</label><input type="tel" id="emergency_phone" class="form-input" placeholder="Numero alternatif"></div>
+<div class="form-group"><label class="form-label">Email</label><input type="email" id="email" class="form-input" placeholder="parent@exemple.com"></div>
+<div class="form-group"><label class="form-label">CIN / CNI</label><input type="text" id="cin" class="form-input" placeholder="Ex: AB123456"></div>
+<div class="form-group col-span-2"><label class="form-label">Adresse de Residence</label><input type="text" id="address" class="form-input" placeholder="Quartier, Ville..."></div>
+</div></div></div>
+<div class="card"><div class="card-header"><div class="card-header-icon" style="background:#fdf4ff;color:#9333ea;"><i class="fa-solid fa-briefcase"></i></div><div><h3>Informations Professionnelles</h3><p>Optionnel</p></div></div><div class="card-body"><div class="form-grid">
+<div class="form-group"><label class="form-label">Profession (Pere)</label><input type="text" id="father_job" class="form-input" placeholder="Ex: Ingenieur"></div>
+<div class="form-group"><label class="form-label">Lieu de Travail (Pere)</label><input type="text" id="father_work_place" class="form-input" placeholder="Nom de l'entreprise"></div>
+<div class="form-group"><label class="form-label">Profession (Mere)</label><input type="text" id="mother_job" class="form-input" placeholder="Ex: Professeure"></div>
+<div class="form-group"><label class="form-label">Lieu de Travail (Mere)</label><input type="text" id="mother_work_place" class="form-input" placeholder="Nom de l'entreprise"></div>
+</div></div></div>
+<div class="card"><div class="card-header"><div class="card-header-icon" style="background:#f0fdf4;color:#16a34a;"><i class="fa-solid fa-children"></i></div><div><h3>Vos Enfants</h3><p>Ajoutez tous les enfants qui frequenteront le parc</p></div></div><div class="card-body">
+<div id="children-wrapper">
+<div class="child-block" id="child-0"><div class="child-block-header"><span class="child-label"><i class="fa-solid fa-child"></i> Enfant #1</span></div><div class="form-grid">
+<div class="form-group"><label class="form-label">Prenom <span class="required">*</span></label><input type="text" data-child="0" data-field="first_name" class="child-input form-input" placeholder="Prenom" required></div>
+<div class="form-group"><label class="form-label">Nom <span class="required">*</span></label><input type="text" data-child="0" data-field="last_name" class="child-input form-input" placeholder="Nom" required></div>
+<div class="form-group"><label class="form-label">Date de naissance</label><input type="date" data-child="0" data-field="date_of_birth" class="child-input form-input"></div>
+<div class="form-group"><label class="form-label">Ecole</label><input type="text" data-child="0" data-field="school_name" class="child-input form-input" placeholder="Ex: Groupe scolaire"></div>
+<div class="form-group col-span-2"><label class="form-label" style="color:#ef4444;"><i class="fa-solid fa-heart-pulse"></i> Informations Medicales (Allergies)</label><input type="text" data-child="0" data-field="allergies" class="child-input form-input" placeholder="Asthme, Allergies..."></div>
+</div></div></div>
+<button type="button" class="btn-add-child" id="btn-add-child"><i class="fa-solid fa-plus-circle"></i> Ajouter un autre enfant</button>
+</div></div>
+<div class="notice"><i class="fa-solid fa-circle-info"></i><span>Apres validation, vos informations seront enregistrees.</span></div>
+<button type="submit" class="btn-submit" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> Soumettre l'inscription</button>
+</form><div class="footer"><p>Kinetic Playground - Vos donnees sont protegees et securisees.</p></div></div></div>
+<div class="success-page" id="successPage"><div class="success-card"><div class="success-icon"><i class="fa-solid fa-check"></i></div><h1 style="font-size:24px;font-weight:900;color:#0f172a;margin-bottom:12px;">Merci pour votre inscription !</h1><p style="font-size:15px;color:#64748b;line-height:1.6;margin-bottom:28px;">Vos informations ont bien ete recues.</p><div style="background:#f8fafc;border:1px dashed #cbd5e1;padding:20px;border-radius:16px;margin-bottom:28px;"><i class="fa-solid fa-cash-register" style="color:#1d4ed8;font-size:20px;margin-bottom:10px;display:block;"></i><p style="font-size:14px;color:#334155;font-weight:600;margin:0;">Veuillez vous diriger vers la caisse et mentionner votre nom.</p></div><a href="javascript:location.reload()" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:#f1f5f9;color:#475569;font-weight:700;text-decoration:none;border-radius:14px;font-size:14px;"><i class="fa-solid fa-arrow-left"></i> Nouvelle inscription</a></div></div>
+<script>
+const GOOGLE_SHEET_URL='https://script.google.com/macros/s/AKfycbxCtaYu0Uk81Z9nqEp37h3gZO_Vqpz5A6KQmq-HNSQbg5LbOyBFnpXOfnZFc6BDZOdJ/exec';
+let childIndex=1;
+const wrapper=document.getElementById('children-wrapper');
+document.getElementById('btn-add-child').addEventListener('click',addChild);
+function addChild(){var idx=childIndex;var block=document.createElement('div');block.className='child-block';block.id='child-'+idx;block.innerHTML='<div class="child-block-header"><span class="child-label"><i class="fa-solid fa-child"></i> Enfant #'+(idx+1)+'</span><button type="button" class="btn-remove-child" onclick="removeChildBlock('+idx+')"><i class="fa-solid fa-xmark"></i></button></div><div class="form-grid"><div class="form-group"><label class="form-label">Prenom <span class="required">*</span></label><input type="text" data-child="'+idx+'" data-field="first_name" class="child-input form-input" placeholder="Prenom" required></div><div class="form-group"><label class="form-label">Nom <span class="required">*</span></label><input type="text" data-child="'+idx+'" data-field="last_name" class="child-input form-input" placeholder="Nom" required></div><div class="form-group"><label class="form-label">Date de naissance</label><input type="date" data-child="'+idx+'" data-field="date_of_birth" class="child-input form-input"></div><div class="form-group"><label class="form-label">Ecole</label><input type="text" data-child="'+idx+'" data-field="school_name" class="child-input form-input" placeholder="Ex: Groupe scolaire"></div><div class="form-group col-span-2"><label class="form-label" style="color:#ef4444;"><i class="fa-solid fa-heart-pulse"></i> Allergies</label><input type="text" data-child="'+idx+'" data-field="allergies" class="child-input form-input" placeholder="Asthme, Allergies..."></div></div>';wrapper.appendChild(block);childIndex++;block.scrollIntoView({behavior:'smooth',block:'center'});}
+function removeChildBlock(idx){var el=document.getElementById('child-'+idx);if(el)el.remove();}
+function collectChildren(){var children=[];wrapper.querySelectorAll('.child-block').forEach(function(block,idx){var inputs=block.querySelectorAll('.child-input');var child={};inputs.forEach(function(input){child[input.dataset.field]=input.value||'';});child.index=idx+1;children.push(child);});return children;}
+function showError(msg){document.getElementById('errorMessage').textContent=msg;document.getElementById('errorToast').classList.add('active');setTimeout(function(){document.getElementById('errorToast').classList.remove('active');},6000);}
+async function handleSubmit(e){e.preventDefault();var fn=document.getElementById('father_name').value.trim();var ph=document.getElementById('phone').value.trim();if(!fn){showError('Le nom du responsable est obligatoire.');return false;}if(!ph){showError('Le numero de telephone est obligatoire.');return false;}var ch=collectChildren();if(!ch.length||!ch[0].first_name||!ch[0].last_name){showError('Prenom et nom du premier enfant obligatoires.');return false;}var data={timestamp:new Date().toLocaleString('fr-FR'),father_name:fn,mother_name:document.getElementById('mother_name').value.trim(),phone:ph,emergency_phone:document.getElementById('emergency_phone').value.trim(),email:document.getElementById('email').value.trim(),cin:document.getElementById('cin').value.trim(),address:document.getElementById('address').value.trim(),father_job:document.getElementById('father_job').value.trim(),father_work_place:document.getElementById('father_work_place').value.trim(),mother_job:document.getElementById('mother_job').value.trim(),mother_work_place:document.getElementById('mother_work_place').value.trim(),source:'Inscription en ligne',children:ch};document.getElementById('loadingOverlay').classList.add('active');document.getElementById('btn-submit').disabled=true;try{await fetch(GOOGLE_SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});document.getElementById('loadingOverlay').classList.remove('active');document.getElementById('formPage').style.display='none';document.getElementById('successPage').classList.add('active');window.scrollTo(0,0);}catch(err){document.getElementById('loadingOverlay').classList.remove('active');document.getElementById('btn-submit').disabled=false;showError('Erreur de connexion. Reessayez.');console.error(err);}return false;}
+</script>
+</body>
+</html>
